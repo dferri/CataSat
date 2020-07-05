@@ -1,0 +1,36 @@
+(declare-datatype IntTree
+                  ((Leaf)
+                   (Node (left IntTree) (elem Int) (right IntTree))))
+
+(declare-const n1 Int)
+(declare-const t0 IntTree)
+(declare-const t1 IntTree)
+(declare-const t2 IntTree)
+
+(define-fun max ((x Int) (y Int)) Int
+  (ite (> x y) x y))
+
+(define-cata Height ((t IntTree)) Int
+  (match t ((Leaf 0)
+            ((Node tl e tr) (+ 1 (max (Height tl) (Height tr)))))))
+
+;; Height 0
+(assert (= t0 Leaf))
+;; Height 1
+(assert (= t1 (Node t0 n1 t0)))
+;; Height 2
+(assert (= t2 (Node t1 n1 t1)))
+
+;; SAT depth 0
+
+;; UNSAT depth 1
+;; (assert (= 1 (Height t0)))
+
+;; UNSAT depth 2
+;; (assert (= 0 (Height t1)))
+
+;; UNSAT depth 3
+;; (assert (= 0 (Height t2)))
+
+;; UNSAT depth 3 (4 with --no-partial-evaluation)
+(assert (= 0 (Height (Node t2 n1 t2))))

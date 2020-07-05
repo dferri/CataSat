@@ -1,0 +1,28 @@
+(declare-datatype IntTree
+                  ((Leaf)
+                   (Node (left IntTree) (elem Int) (right IntTree))))
+
+(define-fun max ((x Int) (y Int)) Int
+  (ite (> x y) x y))
+
+(define-cata Height ((t IntTree)) Int
+  (match t ((Leaf 0)
+            ((Node tl e tr) (+ 1 (max (Height tl) (Height tr)))))))
+
+(define-cata Sum ((t IntTree)) Int
+  (match t ((Leaf 0)
+            ((Node tl e tr) (+ e (Sum tl) (Sum tr))))))
+
+(define-cata Max ((t IntTree)) Int
+  (match t ((Leaf 0)
+           ((Node tl e tr) (max (max e (Max tl)) (Max tr))))))
+
+(declare-fun t0 () IntTree)
+
+;; UNKNOWN without range limitations
+(assert (= 3 (Sum t0)))
+(assert (= 0 (Height t0)))
+(assert (= 1 (Max t0)))
+
+;; UNSAT depth 1 with range limitations
+(define-range ((r Height)) (>= r 0))

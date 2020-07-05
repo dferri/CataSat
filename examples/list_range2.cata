@@ -1,0 +1,32 @@
+(declare-datatype Tree
+                  ((Leaf)
+                   (Node (left Tree) (elem Int) (right Tree))))
+
+(declare-datatype MaybeInt
+  ((None)
+   (Some (val Int))))
+
+(declare-const t1 Tree)
+
+(define-cata Sum ((t Tree)) Int
+  (match t ((Leaf 0)
+            ((Node tl e tr) (+ e (Sum tl) (Sum tr))))))
+
+(define-fun min ((x MaybeInt) (y MaybeInt)) MaybeInt
+  (match x ((None y)
+            ((Some n) (match y ((None x)
+                                ((Some m) (ite (<= n m) (Some n) (Some m)))))))))
+
+(define-cata Min ((t Tree)) MaybeInt
+  (match t ((Leaf None)
+            ((Node tl e tr) (min (min (Some e) (Min tl)) (Min tr))))))
+
+(define-range ((r1 Min) (r2 Sum))
+  (or (and (= r1 None) (= r2 0))
+      (and (< (val r1) 0))
+      (and (>= (val r1) 0) (= (val r1) r2))
+      (and (>= (val r1) 0) (>= r2 (* 2 (val r1))))))
+
+;; UNSAT depth 0
+(assert (= (Sum t1) 3))
+(assert (= (Min t1) (Some 2)))

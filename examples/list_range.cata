@@ -1,0 +1,33 @@
+(declare-datatype IntList
+  ((Nil)
+   (Cons (head Int) (tail IntList))))
+
+(declare-fun n1 () Int)
+(declare-fun l0 () IntList)
+(declare-fun l1 () IntList)
+(declare-fun l2 () IntList)
+
+(define-cata IntListLength ((lst IntList)) Int
+  (match lst ((Nil 0)
+              ((Cons x xs) (+ 1 (IntListLength xs))))))
+
+(define-range ((r IntListLength)) (>= r 0))
+
+; length 0
+(assert (= l0 Nil))
+; length 1
+(assert (= l1 (Cons n1 Nil)))
+; length 2
+(assert (= l2 (Cons n1 (Cons n1 Nil))))
+
+;; UNSAT depth 0
+;; (assert (= -1 (IntListLength l0)))
+
+;; UNSAT depth 1
+;; (assert (= 0 (IntListLength l1)))
+
+;; UNSAT depth 2
+;; (assert (= 1 (IntListLength l2)))
+
+;; UNSAT depth 2 (3 with --no-partial-evaluation)
+ (assert (= 2 (IntListLength (Cons n1 l2))))

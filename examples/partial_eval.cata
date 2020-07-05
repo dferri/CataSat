@@ -1,0 +1,13 @@
+;; Test the `--no-partial-evaluation` option
+
+(declare-datatype IntList
+  ((Nil)
+   (Cons (head Int) (tail IntList))))
+
+(define-cata Length ((lst IntList)) Int
+  (match lst ((Nil 0)
+              ((Cons x xs) (+ 1 (Length xs))))))
+
+;; SAT depth 0 with partial evaluation
+;; UNSAT depth 4 with no partial evaluation (--no-partial-evaluation)
+(assert (= 0 (Length (Cons 2 (Cons 1 (Cons 0 Nil))))))

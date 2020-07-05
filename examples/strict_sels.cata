@@ -1,0 +1,13 @@
+;; Test the `--strict-selectors` option
+
+(declare-datatype IntList
+  ((Nil)
+   (Cons (head Int) (tail IntList))))
+
+(define-cata Length ((lst IntList)) Int
+  (match lst ((Nil 0)
+              ((Cons x xs) (+ 1 (Length xs))))))
+
+;; SAT depth 0
+;; UNSAT depth 0 with strict selectors (--strict-selectors)
+(assert (= 0 (head Nil)))

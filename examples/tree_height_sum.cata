@@ -1,0 +1,23 @@
+(declare-datatype IntTree
+                  ((Leaf)
+                   (Node (left IntTree) (elem Int) (right IntTree))))
+
+(declare-fun t0 () IntTree)
+(declare-fun t1 () IntTree)
+
+(define-fun max ((x Int) (y Int)) Int
+  (ite (> x y) x y))
+
+(define-cata Height ((t IntTree)) Int
+  (match t ((Leaf 0)
+            ((Node tl e tr) (+ 1 (max (Height tl) (Height tr)))))))
+
+(define-cata Sum ((t IntTree)) Int
+  (match t ((Leaf 0)
+            ((Node tl e tr) (+ e (Sum tl) (Sum tr))))))
+
+(assert (= 3 (Sum t0)))
+(assert (= 3 (Height t0)))
+
+(assert (= 4 (Sum t1)))
+(assert (= 4 (Height t1)))

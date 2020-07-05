@@ -1,0 +1,15 @@
+(declare-datatype IntList
+  ((Nil)
+   (Cons (head Int) (tail IntList))))
+
+(declare-const l1 IntList)
+
+(define-cata Sum ((lst IntList)) Int
+  (match lst ((Nil 0)
+              ((Cons x xs) (+ x (Sum xs))))))
+
+(define-cata Length ((lst IntList)) Int
+  (match lst ((Nil 0)
+              ((Cons x xs) (+ 1 (Length xs))))))
+
+(assert (not (= (Length l1) (Sum l1)) ))

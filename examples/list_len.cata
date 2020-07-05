@@ -1,0 +1,24 @@
+(declare-datatype IntList
+  ((Nil)
+   (Cons (head Int) (tail IntList))))
+
+(declare-const n1 Int)
+(declare-const l1 IntList)
+(declare-const l2 IntList)
+(declare-const l3 IntList)
+
+(define-cata Sum ((lst IntList)) Int
+  (match lst ((Nil 0)
+              ((Cons x xs) (+ x (Sum xs))))))
+
+(define-cata Length ((lst IntList)) Int
+  (match lst ((Nil 0)
+              ((Cons x xs) (+ 1 (Length xs))))))
+
+(assert (= l1 (Cons n1 Nil)))
+(assert (= l2 (Cons n1 l1)))
+(assert (= l3 (Cons n1 l2)))
+
+; UNSAT depth 2
+(assert (= 1 (Length l1)))
+(assert (= 2 (Length l3)))
