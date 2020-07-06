@@ -603,6 +603,20 @@ def main():
     parser.add_argument("cataFile", metavar="file",
                         type=argparse.FileType('r'),
                         help="A .cata file, or any text file written with the CataSat syntax (see README)")
+    parser.add_argument("-v", "--verbose",
+                        action="store_true",
+                        help="Prints more details, like depth levels and range and control conditions")
+    parser.add_argument("-pm", "--print-model",
+                        action='store_true',
+                        help="If a model is found, print it (implied by --verbose)")
+    parser.add_argument("-stf", "--save-tmp-file", type=argparse.FileType('w'),
+                        metavar="OUT_FILE",
+                        help="Save the temporary .smt2 file produced by CataSat")
+    parser.add_argument("-max", "--max-iterations",
+                        type=int, default='6',
+                        metavar="ITER",
+                        help="The max number of iterations to perform")
+
     parser.add_argument("-npev", "--no-partial-evaluation",
                         action="store_true",
                         help="Disable partial evaluation of the catamorphisms")
@@ -610,17 +624,6 @@ def main():
                         action='store_true',
                         help="Enable strict selectors (see README)")
 
-    parser.add_argument("-max", "--max-iterations",
-                        type=int, default='6',
-                        help="The max number of iterations to perform")
-    parser.add_argument("-pm", "--print-model",
-                        action='store_true',
-                        help="If a model is found, print it (implied by --verbose)")
-    parser.add_argument("-v", "--verbose",
-                        action="store_true",
-                        help="Prints more details, like depth levels and range and control conditions")
-    parser.add_argument("-stf", "--save-tmp-file", type=argparse.FileType('w'),
-                        help="Save the temporary .smt2 file produced by catasat")
 
     args = parser.parse_args()
 
@@ -776,6 +779,8 @@ def main():
 
             return
 
+        # Control conditions are needed to check only the `nodes` of the tableau with an empty frontier,
+        # i.e. nodes that do not have "free" variables
         # Compute the control conditions on the OLD frontier
         #     \land {for (t, c) \in F_{n-1}}
         #         \lor {C nullary constructor of the sort of the term t}
