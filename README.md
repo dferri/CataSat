@@ -5,7 +5,7 @@ A semidecision procedure for catamorphisms. Uses [Z3](https://github.com/Z3Prove
 Pass as argument the path to a `.cata` file, or any text file written with the CataSat syntax.
 
 ```
-catasat.py [-h] [-npev] [-ss] [-max MAX_ITERATIONS] [-pm] [-v] [-stf SAVE_TMP_FILE] file
+catasat.py [-h] [-v] [-pm] [-stf OUT_FILE] [-max ITER] [-npev] [-ss] file 
 ```
 
 ## Options
