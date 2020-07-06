@@ -61,7 +61,8 @@ with the accompanying assertions:
 The `.cata` files syntax is the same as the [SMT-LIB standard](http://smtlib.cs.uiowa.edu/language.shtml), with the addition of some new commands:
 
 ```
-    <new_commands> ::= "(" "define-cata" <cata_def> ")" "(" "define-range" <range_def> ")"
+    <new_commands> ::= "(" "define-cata" <cata_def> ")"
+                    | "(" "define-range" <range_def> ")"
 
     <cata_def> ::= <symbol> "(" <sorted_var> ")" <sort> <match_term>
 
@@ -71,7 +72,8 @@ The `.cata` files syntax is the same as the [SMT-LIB standard](http://smtlib.cs.
 
     <match_case> ::= "(" <pattern> <term> ")"
 
-    <pattern> ::= <symbol> | "(" <symbol> <symbol>* ")"
+    <pattern> ::= <symbol>
+               | "(" <symbol> <symbol>* ")"
 
     <range_def> ::= "(" <var_cata>+ ")" <term>
 
